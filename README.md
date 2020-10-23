@@ -49,3 +49,30 @@ git push
 ```
 
 
+#### Test out RStudio+ Tidyverse docker
+
+```
+cd FOSS_capstone
+
+# make a testfile
+touch test.file
+cd ..
+
+# launch the container,  see if you can see the test.file
+docker run -v /scratch/FOSS_capstone/:/home/rstudio/work -e PASSWORD=rstudio1 -p 8787:8787 rocker/tidyverse
+
+
+```
+
+- **If on local computer** go to `http://localhost:8787/`  
+- **If on VM** go to `http://INSTANCE_IP_ADDRESS:8787/`
+- rstudio and rstudio1 are the user name/ password
+- make sure to Ctl+C to quit the docker image, or it will still be running even if you close the window
+
+
+### Next Steps
+- Make a bash script?
+	- set up environment/ get data
+		- list data files in a gitignore file?
+	- launch RStudio Docker with Tidyverse
+	- Installing some R tool and running an R script?
