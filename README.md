@@ -48,8 +48,17 @@ git commit -am "update readme"
 git push
 ```
 
+### Install SRA files using SRA_toolkit docker
 
-#### Test out RStudio+ Tidyverse docker
+```
+SRA=SRR12485991
+
+docker run -v /scratch/FOSS_capstone/raw_data/:/raw_data/ \
+quay.io/biocontainers/sra-tools:2.10.0--pl526he1b5a44_0 \
+prefetch -p 1 $SRA --output-directory /raw_data/
+```
+
+### Test out RStudio+ Tidyverse docker
 
 ```
 cd FOSS_capstone
