@@ -53,9 +53,26 @@ git push
 ```
 SRA=SRR12485991
 
+# download the .sra file
 docker run -v /scratch/FOSS_capstone/raw_data/:/raw_data/ \
 quay.io/biocontainers/sra-tools:2.10.0--pl526he1b5a44_0 \
 prefetch -p 1 $SRA --output-directory /raw_data/
+
+# unpack the paired-end fastq files from .sra file
+docker run -v /scratch/FOSS_capstone/raw_data/$SRA/:/fastq_data/ \
+quay.io/biocontainers/sra-tools:2.10.0--pl526he1b5a44_0 \
+fastq-dump --split-files --origfmt ${SRA} --outdir /fastq_data/
+```
+
+### Run Python script to summarize kmer content of reads
+
+```
+cd /scratch/FOSS_capstone/raw_data/$SRA/
+
+for fastq in *.fastq;
+do
+  python3 /scratch/FOSS_capstone/tools/kmer.py $fastq 2 10
+done
 ```
 
 ### Test out RStudio+ Tidyverse docker
