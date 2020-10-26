@@ -1,15 +1,3 @@
-SRA=SRR12485991
-
-# cd into /scratch
-cd /scratch
-ls
-
-# Connect to github
-git clone https://github.com/lizsuter/FOSS_capstone.git
-
-# Install Conda, Jupyterlab, Docker
-# steps go here
-
 # Install SRA files using SRA_toolkit docker
 # download the .sra file
 docker run -v /scratch/FOSS_capstone/raw_data/:/raw_data/ \
@@ -26,15 +14,9 @@ cd /scratch/FOSS_capstone/raw_data/$SRA/
 
 for fastq in *.fastq;
 do
-  python3 /scratch/FOSS_capstone/tools/kmer.py $fastq 2 10
+  python3 /scratch/FOSS_capstone/tools/kmer.py $fastq $k $bin
 done
 
-# Test out RStudio+ Tidyverse docker
-
-# make a testfile
-touch test.file
-cd ..
-
-# launch the container,  see if you can see the test.file
-docker run -v /scratch/FOSS_capstone/:/home/rstudio/work -e PASSWORD=rstudio1 -p 8787:8787 rocker/tidyverse
+# Launch RStudio+ Tidyverse container
+docker run -v /scratch/FOSS_capstone/:/home/rstudio/work -e PASSWORD=rstudio1 -p 8787:8787 rocker/tidyverse:3.6.3
 

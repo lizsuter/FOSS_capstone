@@ -1,8 +1,10 @@
 # FOSS_capstone
-Capstone project for FOSS 2020 workshop
+Capstone project for FOSS 2020 workshop.
+
+Instructions for using this repo:
 
 
-### Set up instance in Cyverse Atmosphere
+### Set up an instance in Cyverse Atmosphere
 - Used instance "Ubuntu 18_04 NoDesktop Base"
 - large2 (CPU: 8, Mem: 48 GB, Disk: 320 GB root)
 
@@ -24,17 +26,17 @@ iinit
 # Check mounted volumes
 df -h 
 
-# cd into /scratch
+# cd into mounted volume (/scratch in this case)
 cd /scratch
 ls
 
-# Connect to github
+# Clone this repo
 git clone https://github.com/lizsuter/FOSS_capstone.git
 
 
 ```
 
-### Install Conda, Jupyterlab, Docker 
+### Install Conda, Docker 
 - Using instructions from [Foss Reproducibility Tutorial](https://learning.cyverse.org/projects/cyverse-cyverse-reproducbility-tutorial/en/latest/step2.html#install-conda)
 
 ### Back up to github
@@ -48,48 +50,31 @@ git commit -am "update readme"
 git push
 ```
 
-### Install SRA files using SRA_toolkit docker
+### Run pipeline
+`run_pipeline.sh` sequence of events:
+- runs SRA_toolkit container
+- downloads fastq file from SRA and unpacks
+- runs `kmer.py` which looks for DNA motifs of length `k` and counts how many times it finds them across the length of the read in bins of size `bin`
+	- generates a count table, 'motifs.csv'
+- launches a container with RStudio in an html window. 
+	- R version 3.6.2
+	- tidyverse
+- contains an R script for generating a heatmap from `motifs.csv`
 
+
+First indicate names of variables, for example
 ```
 SRA=SRR12485991
+k=2
+bin=10
+``
 
-# download the .sra file
-docker run -v /scratch/FOSS_capstone/raw_data/:/raw_data/ \
-quay.io/biocontainers/sra-tools:2.10.0--pl526he1b5a44_0 \
-prefetch -p 1 $SRA --output-directory /raw_data/
-
-# unpack the paired-end fastq files from .sra file
-docker run -v /scratch/FOSS_capstone/raw_data/$SRA/:/fastq_data/ \
-quay.io/biocontainers/sra-tools:2.10.0--pl526he1b5a44_0 \
-fastq-dump --split-files --origfmt ${SRA} --outdir /fastq_data/
+Run pipeline
+```
+bash run_pipeline.sh
 ```
 
-### Run Python script to summarize kmer content of reads
-
-```
-cd /scratch/FOSS_capstone/raw_data/$SRA/
-
-for fastq in *.fastq;
-do
-  python3 /scratch/FOSS_capstone/tools/kmer.py $fastq 2 10
-done
-```
-
-### Test out RStudio+ Tidyverse docker
-
-```
-cd FOSS_capstone
-
-# make a testfile
-touch test.file
-cd ..
-
-# launch the container,  see if you can see the test.file
-docker run -v /scratch/FOSS_capstone/:/home/rstudio/work -e PASSWORD=rstudio1 -p 8787:8787 rocker/tidyverse
-
-
-```
-
+#### RStudio on the server,  see if you can see the files
 - **If on local computer** go to `http://localhost:8787/`  
 - **If on VM** go to `http://INSTANCE_IP_ADDRESS:8787/`
 - rstudio and rstudio1 are the user name/ password
@@ -97,8 +82,4 @@ docker run -v /scratch/FOSS_capstone/:/home/rstudio/work -e PASSWORD=rstudio1 -p
 
 
 ### Next Steps
-- Make a bash script?
-	- set up environment/ get data
-		- list data files in a gitignore file?
-	- launch RStudio Docker with Tidyverse
-	- Installing some R tool and running an R script?
+- Play around in R
