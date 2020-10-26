@@ -43,6 +43,9 @@ git clone https://github.com/lizsuter/FOSS_capstone.git
 ```
 git status
 
+# stage all changes 
+git add .
+
 # commit changes with a helpful message
 git commit -am "update readme"
 
@@ -55,7 +58,7 @@ git push
 - runs SRA_toolkit container
 - downloads fastq file from SRA and unpacks
 - runs `kmer.py` which looks for DNA motifs of length `k` and counts how many times it finds them across the length of the read in bins of size `bin`
-	- generates a count table, 'motifs.csv'
+	- generates a count table, `motifs.csv`
 - launches a container with RStudio in an html window. 
 	- R version 3.6.2
 	- tidyverse
@@ -67,7 +70,7 @@ First indicate names of variables, for example
 SRA=SRR12485991
 k=2
 bin=10
-``
+```
 
 Run pipeline
 ```
