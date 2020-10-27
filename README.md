@@ -72,9 +72,9 @@ k=2
 bin=10
 ```
 
-Run pipeline
+Run pipeline (stdin 1 is SRA, 2 is kmer size, 3 is bin size in bp)
 ```
-bash run_pipeline.sh
+bash run_pipeline.sh SRR12485991 2 10
 ```
 
 #### RStudio on the server,  see if you can see the files
