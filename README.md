@@ -56,15 +56,15 @@ git push
 ### Run pipeline
 `run_pipeline.sh` sequence of events:
 - runs SRA_toolkit container
-- downloads fastq file from SRA and unpacks
-- runs `kmer.py` which looks for DNA motifs of length `k` and counts how many times it finds them across the length of the read in bins of size `bin`
+- downloads fastq file using `SRA` run number and unpacks
+- runs `kmer.py` which looks for DNA motifs of length `kmer` and counts how many times it finds them across the length of the read in bins of size `bin`
 	- generates a count table, `motifs.csv`
 - launches a container with RStudio in an html window. 
 	- R version 3.6.2
 	- tidyverse
 - contains an R script for generating a heatmap from `motifs.csv`
 
-Run pipeline (stdin 1 is SRA, 2 is kmer size, 3 is bin size in bp)
+Run pipeline (stdin 1 is SRA, 2 is kmer size, 3 is bin size in bp), for example:
 ```
 bash run_pipeline.sh SRR12901070 2 10
 ```
@@ -77,4 +77,4 @@ bash run_pipeline.sh SRR12901070 2 10
 
 
 ### Next Steps
-- Play around in R
+- Play around in R!
