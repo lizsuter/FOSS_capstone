@@ -64,17 +64,9 @@ git push
 	- tidyverse
 - contains an R script for generating a heatmap from `motifs.csv`
 
-
-First indicate names of variables, for example
-```
-SRA=SRR12485991
-k=2
-bin=10
-```
-
 Run pipeline (stdin 1 is SRA, 2 is kmer size, 3 is bin size in bp)
 ```
-bash run_pipeline.sh SRR12485991 2 10
+bash run_pipeline.sh SRR12901070 2 10
 ```
 
 #### RStudio on the server,  see if you can see the files
