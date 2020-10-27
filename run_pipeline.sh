@@ -38,9 +38,6 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 # Install pandas
 sudo apt-get -y install python-pandas
 
-# Clone project repo
-git clone https://github.com/lizsuter/FOSS_capstone.git
-
 #################################################################
 # Install SRA files using SRA_toolkit docker
 #################################################################
@@ -49,16 +46,22 @@ git clone https://github.com/lizsuter/FOSS_capstone.git
 mkdir raw_data
 
 # download the .sra file
+echo -e "\e[32m\nSRA downloading\n"
+
 docker run -v /scratch/FOSS_capstone/raw_data/:/raw_data/ \
 quay.io/biocontainers/sra-tools:2.10.0--pl526he1b5a44_0 \
 prefetch -p 1 $SRA --output-directory /raw_data/
 
 # unpack the paired-end fastq files from .sra file
+echo -e "\e[32m\nsplitting SRA into paired fastq files\n"
+
 docker run -v /scratch/FOSS_capstone/raw_data/$SRA/:/fastq_data/ \
 quay.io/biocontainers/sra-tools:2.10.0--pl526he1b5a44_0 \
 fastq-dump --split-files --origfmt ${SRA} --outdir /fastq_data/
 
 # Run Python script to summarize kmer content of reads
+echo -e "\e[32m\nanalyzing kmer content of fastq files\n"
+
 cd /scratch/FOSS_capstone/raw_data/$SRA/
 
 for fastq in *.fastq;
@@ -67,5 +70,7 @@ do
 done
 
 # Launch RStudio+ Tidyverse container
+echo -e "\e[32m\nlaunching Rstudio\n"
+
 docker run -v /scratch/FOSS_capstone/:/home/rstudio/work -e PASSWORD=rstudio1 -p 8787:8787 rocker/tidyverse:3.6.3
 
