@@ -1,4 +1,53 @@
+#!/bin/bash
+
+# User-defined variables from stdin
+SRA=$1
+kmer=$2
+bin=$3
+
+#################################################################
+# Download and install all necessary packages for project
+#################################################################
+
+# Update ubuntu apt-get package manager
+sudo apt-get update
+
+# Install some needed packages
+sudo apt-get install -y \
+apt-transport-https \
+ca-certificates \
+curl \
+gnupg-agent \
+software-properties-common
+
+# Add the Docker key
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+# Add the repository
+sudo add-apt-repository \
+ "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+ $(lsb_release -cs) \
+ stable"
+
+# Update apt-get with new repository information
+sudo apt-get update
+
+# Install docker
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+
+# Install pandas
+sudo apt-get -y install python-pandas
+
+# Clone project repo
+git clone https://github.com/lizsuter/FOSS_capstone.git
+
+#################################################################
 # Install SRA files using SRA_toolkit docker
+#################################################################
+
+#create folder (untracked) for sra data to download
+mkdir raw_data
+
 # download the .sra file
 docker run -v /scratch/FOSS_capstone/raw_data/:/raw_data/ \
 quay.io/biocontainers/sra-tools:2.10.0--pl526he1b5a44_0 \
@@ -14,7 +63,7 @@ cd /scratch/FOSS_capstone/raw_data/$SRA/
 
 for fastq in *.fastq;
 do
-  python3 /scratch/FOSS_capstone/tools/kmer.py $fastq $k $bin
+  python /scratch/FOSS_capstone/tools/kmer.py $fastq $kmer $bin
 done
 
 # Launch RStudio+ Tidyverse container
