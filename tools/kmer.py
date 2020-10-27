@@ -38,13 +38,13 @@ def binner(seq, motif_dt, k, bin, kmer_dt):
     return motif_dt
 
 
-def writer(motif_dt, kmer_dt):
+def writer(motif_dt, kmer_dt, file):
     df = pandas.DataFrame()
     df['motif'] = list(kmer_dt.keys())
     for k, v in motif_dt.items():
         df[k] = v.values()
     print(df)
-    df.to_csv('motifs.csv', index=False)
+    df.to_csv(file + '.motifs.csv', index=False)
 
 
 if __name__ == '__main__':
@@ -53,4 +53,4 @@ if __name__ == '__main__':
     bin = int(sys.argv[3])
     kmer_dt = kmer_combos(k)
     motif_dt = main(file, k, bin, kmer_dt)
-    writer(motif_dt, kmer_dt)
+    writer(motif_dt, kmer_dt, file)
