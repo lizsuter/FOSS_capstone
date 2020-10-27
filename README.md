@@ -29,11 +29,13 @@ df -h
 cd /scratch
 ls
 
-# Clone this repo and cd in
+# Clone this repo
 git clone https://github.com/lizsuter/FOSS_capstone.git
+
+
+# set permissions on FOSS_capstone and cd in
+chown -R 1000:10013 /scratch/FOSS_capstone
 cd FOSS_capstone
-
-
 ```
 
 
