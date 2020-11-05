@@ -74,3 +74,5 @@ echo -e "\e[32m\nlaunching Rstudio\n\e[0m"
 
 docker run -v /scratch/FOSS_capstone/:/home/rstudio/work -e PASSWORD=rstudio1 -p 8787:8787 rocker/tidyverse:3.6.3
 
+# Run R script
+RUN Rscript /tools/heatplot.R
